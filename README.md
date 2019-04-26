@@ -1,12 +1,10 @@
-Definitely WIP
-
-# An interoperable 'Switch' form control
+# A standard 'Switch' form control
 
 This document explains a new HTML element for a 'switch' form control.  
 
 ## Why a switch control?
 
-Many UI frameworks have toggle-switch widgets to represent off/on states and ask a user to change the state.  The current HTML standard has a checkbox, 
+Many UI frameworks have switch controls to represent off/on states and ask a user to change the state.  As of April 2019 the HTML standard has a checkbox, which is similar to switch control semantically.  However, it's hard to change checkbox's appearance to switch-like appearance.
 
 ## Sample code
 
@@ -21,11 +19,22 @@ import 'std:elements/switch';
 </form>
 ```
 
+This shows something like:<br> <img alt="Sample image" src=switch-example.png width=215>
+
 ## Goals
+
+* Identical appearance on all platforms by default
+* Easy and flexible customization
+  * The switch control should provide a way to switch its appearance from the default one to platform-dependent one.<br>
+  * The switch control should provide a way to customize color, size, radius, etc. of its visual parts.
+* API similar to existing form controls
+
 
 ## Proposed API
 
-```<std-switch>``` is similar to ```<input type=checkbox>``` in terms of API.
+```import 'std:elements/switch'``` provides ```<std-switch>``` element and ```StdSwitchElement``` interface.
+
+```<std-switch>``` is similar to ```<input type=checkbox>``` in terms of API. A ```<std-switch>``` instance has two states; "off" and "on".  It doesn't support indeterminate state like the checkbox.
 
 ### Content attributes:
 
@@ -38,6 +47,8 @@ import 'std:elements/switch';
 
 TODO: Supports ```autofocus```
 
+These attributes should work same as existing form controls.
+
 ```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes.  There are some approaches for them. We have not decided yet.
 
 * A) Compatible with ```<input type=checkbox>```<br>
@@ -47,19 +58,20 @@ TODO: Supports ```autofocus```
 
 ### Properties and functions
 
-* ```checked```
-* ```defaultChecked```
-* ```disabled```
-* ```form```
-* ```labels```
-* ```name```
+* ```checked```  - See the previous section
+* ```defaultChecked``` - See the previous section
+* ```disabled``` - Same as existing form controls
+* ```form``` - Same as existing form controls
+* ```labels``` - Same as existing form controls
+* ```name``` - Same as existing form controls
 * ```type``` - returns ```'std-switch'```
-* ```willValidate```
-* ```validationMessage```
+* ```willValidate``` - Same as existing form controls
+* ```validationMessage``` - Same as existing form controls
 
-* ```checkValidity()```
-* ```reportValidity()```
-* ```setCustomValidity(errorMessage)```
+* ```checkValidity()``` - Same as existing form controls
+* ```reportValidity()``` - Same as existing form controls
+* ```setCustomValidity(errorMessage)``` - Same as existing form controls
+
 
 ### Pseudo classes
 
@@ -99,7 +111,7 @@ There are two approaches. We have not decided yet.
 
 ### Appearance customization
 
-TBW: an easy flag to enable platform-dependent appearance
+TODO: an easy flag to enable platform-dependent appearance
 
-TBW: Full customization
+TODO: Full customization.  Shadow parts? CSS custom properties?
 
