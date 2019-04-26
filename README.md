@@ -21,6 +21,8 @@ import 'std:elements/switch';
 
 This shows something like:<br> <img alt="Sample image" src=switch-example.png width=215>
 
+Users can turn on/off the switch by clicking it, and submitting the form will have an entry for the switch control.
+
 ## Goals
 
 * Identical appearance on all platforms by default
