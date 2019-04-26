@@ -4,7 +4,11 @@ This document explains a new HTML element for a 'switch' form control.
 
 ## Why a switch control?
 
-Many UI frameworks have switch controls to represent off/on states and ask a user to change the state.  As of April 2019 the HTML standard has a checkbox, which is similar to switch control semantically.  However, it's hard to change checkbox's appearance to switch-like appearance.
+Many UI frameworks have switch controls to represent off/on states and ask a user to change the state.  As of April 2019 the HTML standard has a checkbox, which is functionally similar to switch control.  However:
+
+* Semantically, a switch and checkbox have different meanings, with a switch being more appropriate for turning things on/off. (See e.g. [Microsoft Fluent design guidelines](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles#choosing-between-toggle-switch-and-check-box), [Nielsen Norman Group](https://www.nngroup.com/articles/toggle-switch-guidelines/), [UX Planet](https://uxplanet.org/checkbox-vs-toggle-switch-7fc6e83f10b8).)
+* Switches and checkboxes manifest differently to accessibility technology: see the [`switch` ARIA role](http://w3c.github.io/aria/#switch).
+* It's hard to change checkbox's appearance to a switch-like appearance, for when that user experience is desired.
 
 ## Sample code
 
