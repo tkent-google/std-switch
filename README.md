@@ -58,8 +58,8 @@ These attributes should work same as existing form controls.
 
 ### Properties and functions
 
-* ```checked```  - See the previous section
-* ```defaultChecked``` - See the previous section
+* ```checked```  - Represents the element's state.  See the previous section
+* ```defaultChecked``` - Represents the default state.  See the previous section
 * ```disabled``` - Same as existing form controls
 * ```form``` - Same as existing form controls
 * ```labels``` - Same as existing form controls
@@ -104,9 +104,9 @@ TODO: Supports ```:checked```, ```:required```, and ```:optional```
 There are two approaches. We have not decided yet.
 
 * A) Compatible with ```<input type=checkbox>```<br>
- ```<std-swtich name=something>``` with off state will send no entry.  One with on state will send ```value``` attribute value if it exists, or ```something=on```.
+ ```<std-swtich name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
 * B) Send state simply<br>
- ```<std-swtich name=something>``` with off state will send ```something=off```, one with on state will send ```something=on```.
+ ```<std-swtich name=something>``` with "off" state will send ```something=off```, one with "on" state will send ```something=on```.
 
 
 ### Appearance customization
