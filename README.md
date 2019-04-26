@@ -27,36 +27,55 @@ import 'std:elements/switch';
 
 ```<std-switch>``` is similar to ```<input type=checkbox>``` in terms of API.
 
-There are some differences
-* No indeterminate state
-* ```checked``` attribute handling.
-
 ### Content attributes:
 
 * [Global attributes](https://html.spec.whatwg.org/multipage/dom.html#global-attributes)
-* autocomplete
-* checked
-* defaultchecked
-* disabled
-* form
-* name
-* required
+* ```autocomplete```
+* ```disabled```
+* ```form```
+* ```name```
+* ```required```
 
-TODO: autofocus
+TODO: Supports ```autofocus```
+
+```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes.  There are some approaches for them. We have not decided yet.
+
+* A) Compatible with ```<input type=checkbox>```<br>
+```checked``` attribute represents the default state, and ```defaultChecked``` property reflects on ```checked``` attribute. No attribute mapped to ```checked``` property.
+* B) Simple mappings<br>
+```defaultChecked``` property reflects on ```defaultchecked``` attribute value, and ```checked``` property reflects on ```checked``` attribute.  Code like ```switch.checked = true``` adds ```checked``` attribute.  We need to specify ```defaultchecked``` attribute if we want to reset the element to on state, like ```<std-switch defaultchecked checked>```
+
+### Properties and functions
+
+* ```checked```
+* ```defaultChecked```
+* ```disabled```
+* ```form```
+* ```labels```
+* ```name```
+* ```type``` - returns ```'std-switch'```
+* ```willValidate```
+* ```validationMessage```
+
+* ```checkValidity()```
+* ```reportValidity()```
+* ```setCustomValidity(errorMessage)```
 
 ### Pseudo classes
 
-* Global ones such as :focus :hover :target
-* :valid
-* :invalid
-* :disabled
-* :enabled
+* Global ones such as ```:focus``` ```:hover``` ```:target```
+* ```:valid``` - match if the element has no ```required``` attribute, of if the element has ```required``` attribute and the state is on.
+* ```:invalid``` - match if the element doesn't match to ```:valid```.
+* ```:disabled``` - match if the element has ```disabled``` attribute, or an ancestor ```<fieldset>``` has ```disabled``` attribute.
+* ```:enabled``` - match if the element doesn't match to ```:disabled```.
 
-TODO: :checked, :required, :optional
+TODO: Supports ```:checked```, ```:required```, and ```:optional```
+
 
 ### Events
 
 ```<std-switch>``` dispatches ```input``` and ```change``` events when a user changes the element's state.
+
 
 ### Relationship with other elements
 
@@ -69,6 +88,14 @@ TODO: :checked, :required, :optional
   
 
 ### Form submission
+
+There are two approaches. We have not decided yet.
+
+* A) Compatible with ```<input type=checkbox>```<br>
+ ```<std-swtich name=something>``` with off state will send no entry.  One with on state will send ```value``` attribute value if it exists, or ```something=on```.
+* B) Send state simply<br>
+ ```<std-swtich name=something>``` with off state will send ```something=off```, one with on state will send ```something=on```.
+
 
 ### Appearance customization
 
