@@ -55,7 +55,7 @@ TODO: Supports ```autofocus```
 
 These attributes should work same as existing form controls.
 
-```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes (Issue #2).  There are some approaches for them. We have not decided yet.
+```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes ([Issue #2](https://github.com/tkent-google/std-switch/issues/2)).  There are some approaches for them. We have not decided yet. ([Issue #4](https://github.com/tkent-google/std-switch/issues/4))
 
 * A) Compatible with ```<input type=checkbox>```<br>
 ```checked``` attribute represents the default state, and ```defaultChecked``` property reflects on ```checked``` attribute. No attribute mapped to ```checked``` property.
@@ -87,7 +87,7 @@ These attributes should work same as existing form controls.
 * ```:disabled``` - match if the element has ```disabled``` attribute, or an ancestor ```<fieldset>``` has ```disabled``` attribute.
 * ```:enabled``` - match if the element doesn't match to ```:disabled```.
 
-TODO: Supports ```:checked```, ```:required```, and ```:optional```
+TODO: Supports ```:checked``` ([Issue #3](https://github.com/tkent-google/std-switch/issues/3)), ```:required```, and ```:optional```
 
 
 ### Events
@@ -107,7 +107,7 @@ TODO: Supports ```:checked```, ```:required```, and ```:optional```
 
 ### Form submission
 
-There are two approaches. We have not decided yet.
+There are two approaches. We have not decided yet. ([Issue #5](https://github.com/tkent-google/std-switch/issues/5))
 
 * A) Compatible with ```<input type=checkbox>```<br>
  ```<std-swtich name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
@@ -117,7 +117,7 @@ There are two approaches. We have not decided yet.
 
 ### Appearance customization
 
-TODO: an easy flag to enable platform-dependent appearance
+TODO: an easy flag to enable platform-dependent appearance ([Issue #6](https://github.com/tkent-google/std-switch/issues/6))
 
-TODO: Full customization.  Shadow parts? CSS custom properties?
+TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](https://github.com/tkent-google/std-switch/issues/7))
 
