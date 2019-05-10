@@ -55,7 +55,7 @@ TODO: Supports ```autofocus```
 
 These attributes should work same as existing form controls.
 
-```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes.  There are some approaches for them. We have not decided yet.
+```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes (Issue #2).  There are some approaches for them. We have not decided yet.
 
 * A) Compatible with ```<input type=checkbox>```<br>
 ```checked``` attribute represents the default state, and ```defaultChecked``` property reflects on ```checked``` attribute. No attribute mapped to ```checked``` property.
