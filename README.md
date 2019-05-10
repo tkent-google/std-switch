@@ -38,7 +38,8 @@ Users can turn on/off the switch by clicking it, and submitting the form will ha
 
 ## Proposed API
 
-```import 'std:elements/switch'``` provides ```<std-switch>``` element and ```StdSwitchElement``` interface.
+The element is provided as a [JavaScript Standard Library](https://github.com/tc39/proposal-javascript-standard-library/).
+```import 'std:elements/switch'``` defines ```<std-switch>``` element and ```StdSwitchElement``` interface.
 
 ```<std-switch>``` is similar to ```<input type=checkbox>``` in terms of API. A ```<std-switch>``` instance has two states; "off" and "on".  It doesn't support indeterminate state like the checkbox.
 
