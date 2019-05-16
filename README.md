@@ -119,6 +119,7 @@ There are two approaches. We have not decided yet. ([Issue #5](https://github.co
 ### Appearance customization
 
 TODO: an easy flag to enable platform-dependent appearance ([Issue #6](https://github.com/tkent-google/std-switch/issues/6))
+When the flag is enabled, ```std-switch``` element is styled as UISwitch on iOS, [Material Design switch](https://material.io/design/components/selection-controls.html#switches) on Android, [Fluent design toggle switch](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles) on Windows.
 
 TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](https://github.com/tkent-google/std-switch/issues/7))
 
