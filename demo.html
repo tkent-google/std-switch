@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script type="module" src="src/switch.mjs"></script>
+<style>
+internal-meter, std-switch {
+  margin: 0.2em;
+  zoom: 4;
+}
+</style>
+
+<h2><code>&lt;std-switch></code></h2>
+
+<div class=container>
+<std-switch></std-switch><br>
+<std-switch style="width: 100px; height:40px" ></std-switch>
+
+</div>
+<div dir=rtl>
+<label>RTL: <std-switch tabindex=0></std-switch></label>
+</div>
+
+<div style="writing-mode: vertical-rl;">
+<p style="font-size:32px;">たてがき</p>
+<std-switch tabindex=0></std-switch>
+<label dir=rtl>RTL: <std-switch tabindex=0></std-switch></label>
+</div>
+
+<pre></pre>
+<script>
+function log(msg) {
+  document.querySelector('pre').textContent += msg + '\n';
+}
+
+function logEvent(event) {
+  log(`Event type=${event.type} target=${event.target.tagName}`);
+}
+
+document.addEventListener('input', logEvent);
+document.addEventListener('change', logEvent);
+</script>
