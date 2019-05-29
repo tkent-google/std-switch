@@ -4,7 +4,7 @@
 <style>
 internal-meter, std-switch {
   margin: 0.2em;
-  zoom: 4;
+  zoom: 2;
 }
 </style>
 
@@ -20,10 +20,27 @@ internal-meter, std-switch {
 </div>
 
 <div style="writing-mode: vertical-rl;">
-<p style="font-size:32px;">たてがき</p>
+<p style="font-size:32px;">Vertial wirting</p>
 <std-switch tabindex=0></std-switch>
 <label dir=rtl>RTL: <std-switch tabindex=0></std-switch></label>
 </div>
+
+<div style="--std-control-theme: material">
+  <p><code>--std-control-theme: material</code></p>
+  <std-switch></std-switch><std-switch on></std-switch>
+</div>
+
+<div style="--std-control-theme: cocoa">
+  <p><code>--std-control-theme: cocoa</code></p>
+  <std-switch></std-switch><std-switch on></std-switch>
+</div>
+
+<div style="--std-control-theme: match-platform">
+  <p><code>--std-control-theme: match-platform</code></p>
+  <p id="platform-message"></p>
+  <std-switch></std-switch><std-switch on></std-switch>
+</div>
+
 
 <pre></pre>
 <script>
@@ -37,4 +54,5 @@ function logEvent(event) {
 
 document.addEventListener('input', logEvent);
 document.addEventListener('change', logEvent);
+document.querySelector('#platform-message').textContent = `navigator.platform: "${navigator.platform}"`;
 </script>
