@@ -65,7 +65,8 @@ const THEME_FLUENT = 'fluent';
 
 function effectiveTheme(theme) {
   let platform = navigator.platform;
-  if (theme == THEME_MATERIAL || theme == THEME_MATCH_PLATFORM && platform == 'Android')
+  // Both of Android and ChromeOS return "Linux foobar".
+  if (theme == THEME_MATERIAL || theme == THEME_MATCH_PLATFORM && platform.startsWith('Linux'))
     return THEME_MATERIAL;
   if (theme == THEME_COCOA || theme == THEME_MATCH_PLATFORM && (platform.startsWith('iP') || platform.startsWith('Mac')))
     return THEME_COCOA;
@@ -79,9 +80,7 @@ const kMeterStyle = `
   display: inline-block;
   inline-size: 10em;
   block-size: 1em;
-  border: var(--std-meter-border, 1px solid black);
-  border-radius: var(--std-meter-radius);
-  padding: var(--std-meter-padding);
+  border: 1px solid black;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -110,43 +109,6 @@ const kSwitchStyle = `
 
   /* Internal variables based on exposed variables */
   --i-color-on: var(--std-switch-color-on, #0077ff);
-  --i-track-height: var(--std-switch-track-height, 100%);
-  --i-track-border: var(--std-switch-track-border, 2px solid #dddddd);
-  --i-track-border-on: var(--std-switch-track-border-on, 2px solid var(--i-color-on));
-  --i-track-border-on-active: var(--std-switch-track-border-on-active, 2px solid #77bbff);
-  --i-track-radius: var(--std-switch-track-radius, 13px);
-  --i-track-padding: var(--std-switch-track--padding, 0px);
-  --i-track-inner-radius: var(--std-switch-track-inner-radius, 11px);
-  --i-track-background: var(--std-switch-track-background, transparent);
-  --i-track-background-active: var(--std-switch-track-background-active, var(--std-switch-track-background, #dddddd));
-  --i-track-background-on: var(--std-switch-track-background-on, var(--i-color-on));
-  --i-track-background-on-active: var(--std-switch-track-background-on-active, var(--std-switch-track-background-on, #77bbff));
-  --i-track-shadow: var(--std-switch-track-shadow, 0 0 0 1px #f8f8f8);
-  --i-track-shadow-focus: var(--std-switch-track-shadow-focus, 0 0 0 2px #f8f8f8);
-  --i-track-shadow-on: var(--std-switch-track-shadow-on);
-  --i-track-shadow-on-focus: var(--std-switch-track-shadow-on-focus, 0 0 0 2px #dddddd);
-  --i-track-shadow-on-active: var(--std-switch-track-shadow-on-active, 0 0 0 2px #f8f8f8);
-
-  --i-thumb-width: var(--std-switch-thumb-width, 22px);
-  --i-thumb-width-hover: var(--std-switch-thumb-width-hover, 26px);
-  --i-thumb-height: var(--std-switch-thumb-height, 22px);
-  --i-thumb-radius: var(--std-switch-thumb-radius, calc(var(--i-thumb-height) / 2));
-  --i-thumb-border: var(--std-switch-thumb-border, 1px solid black);
-  --i-thumb-border-focus: var(--std-switch-thumb-border-focus, 2px solid black);
-  --i-thumb-border-on: var(--std-switch-thumb-border-on, 1px solid #0077ff);
-  --i-thumb-border-on-focus: var(--std-switch-thumb-border-on-focus, 2px solid #0077ff);
-  --i-thumb-background: var(--std-switch-thumb-background, white);
-  --i-thumb-background-on: var(--std-switch-thumb-background-on, var(--std-switch-thumb-background, white));
-  --i-thumb-margin-start: var(--std-switch-thumb-margin-start, 2px);
-  --i-thumb-margin-end: var(--std-switch-thumb-margin-end, 2px);
-  --i-thumb-shadow: var(--std-switch-thumb-shadow);
-
-
-  --std-meter-border: var(--i-track-border);
-  --std-meter-radius: var(--i-track-radius);
-  --std-meter-padding: var(--i-track-padding);
-  --std-meter-value-radius: var(--i-track-inner-radius);
-  --std-meter-value-background: var(--i-track-background-on);
 }
 
 :host(:disabled) {
@@ -157,35 +119,60 @@ const kSwitchStyle = `
   outline-offset: 5px;
 }
 
-:host([on]) internal-meter  {
-  border: var(--i-track-border-on);
-  box-shadow: var(--i-track-shadow-on);
+internal-meter {
+  --i-track-height: 100%;
+  --i-track-border: 2px solid #dddddd;
+  --i-track-border-on: 2px solid var(--i-color-on);
+  --i-track-border-on-active: 2px solid #77bbff;
+  --i-track-radius: 13px;
+  --i-track-padding: 0px;
+  --i-track-background: transparent;
+  --i-track-background-active: #dddddd;
+  --i-track-background-on: var(--i-color-on);
+  --i-track-background-on-active: #77bbff;
+  --i-track-shadow: 0 0 0 1px #f8f8f8;
+  --i-track-shadow-focus: 0 0 0 2px #f8f8f8;
+  --i-track-shadow-on: var(--i-track-shadow);
+  --i-track-shadow-on-focus: 0 0 0 2px #dddddd;
+  --i-track-shadow-on-active: 0 0 0 2px #f8f8f8;
+
+  --std-meter-value-radius: var(--std-switch-track-inner-radius, 11px);
+  --std-meter-value-background: var(--i-track-background-on);
+
+  background: var(--std-switch-track-background, var(--i-track-background));
+  border: var(--std-switch-track-border, var(--i-track-border));
+  border-radius: var(--std-switch-track-radius, var(--i-track-radius));
+  box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow));
+  padding: var(--std-switch-track--padding, var(--i-track-padding));
+  inline-size: 100%;
+  block-size: var(--std-switch-track-height, var(--i-track-height));
+  transition: all linear 0.1s; /* TODO(customizable) */
+}
+
+:host([on]) internal-meter {
+  --std-meter-value-background: var(--std-switch-track-background, var(--i-track-background-on));
+  border: var(--std-switch-track-border, var(--i-track-border-on));
+  box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow-on));
 }
 
 :host(:focus) internal-meter {
-  box-shadow: var(--i-track-shadow-focus);
+  box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow-focus));
 }
+
 :host([on]:focus) internal-meter {
-  box-shadow: var(--i-track-shadow-on-focus);
+  box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow-on-focus));
 }
 
 /* We can't use :enabled until all major browsers support FACE. */
 
 :host(:not(:disabled):active) internal-meter {
-  background: var(--i-track-background-active);
-}
-:host([on]:not(:disabled):active) internal-meter {
-  --std-meter-value-background: var(--i-track-background-on-active);
-  border: var(--i-track-border-on-active);
-  box-shadow: var(--i-track-shadow-on-active);
+  background: var(--std-switch-track-background, var(--i-track-background-active));
 }
 
-internal-meter {
-  background: var(--i-track-background);
-  box-shadow: var(--i-track-shadow);
-  inline-size: 100%;
-  block-size: var(--i-track-height);
-  transition: all linear 0.1s; /* TODO(customizable) */
+:host([on]:not(:disabled):active) internal-meter {
+  --std-meter-value-background: var(--std-switch-track-background, var(--i-track-background-on-active));
+  border: var(--std-switch-track-border, var(--i-track-border-on-active));
+  box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow-on-active));
 }
 
 .container {
@@ -197,39 +184,50 @@ internal-meter {
 }
 
 .thumb {
+  --i-thumb-width: 22px;
+  --i-thumb-width-hover: 26px;
+  --i-thumb-height: 22px;
+  --i-thumb-radius: calc(var(--std-switch-thumb-height, var(--i-thumb-height)) / 2);
+  --i-thumb-border: 1px solid black;
+  --i-thumb-border-focus: 2px solid black;
+  --i-thumb-border-on: 1px solid #0077ff;
+  --i-thumb-border-on-focus: 2px solid #0077ff;
+  --i-thumb-background: white;
+  --i-thumb-margin-start: 2px;
+  --i-thumb-margin-end: 2px;
+
   position: absolute !important;
   display: inline-block;
-  border: var(--i-thumb-border);
-  border-radius: var(--i-thumb-radius);
-  inline-size: var(--i-thumb-width);
-  block-size: var(--i-thumb-height);
-  background: var(--i-thumb-background);
+  border: var(--std-switch-thumb-border, var(--i-thumb-border));
+  border-radius: var(--std-switch-thumb-radius, var(--i-thumb-radius));
+  inline-size: var(--std-switch-thumb-width, var(--i-thumb-width));
+  block-size: var(--std-switch-thumb-height, var(--i-thumb-height));
+  background: var(--std-switch-thumb-background, var(--i-thumb-background));
   box-sizing: border-box;
-  inset-inline-start: var(--i-thumb-margin-start);
+  inset-inline-start: var(--std-switch-thumb-margin-start, var(--i-thumb-margin-start));
   transition: all linear 0.1s; /* TODO(customizable) */
-  box-shadow: var(--i-thumb-shadow);
+  box-shadow: var(--std-switch-thumb-shadow);
 }
 
 :host(:not(:disabled):hover) .thumb {
-  inline-size: var(--i-thumb-width-hover);
+  inline-size: var(--std-switch-thumb-width, var(--i-thumb-width-hover));
 }
 
 :host([on]) .thumb {
-  background: var(--i-thumb-background-on);
-  border: var(--i-thumb-border-on);
-  inset-inline-start: calc(100% - var(--i-thumb-width) - var(--i-thumb-margin-end));
+  border: var(--std-switch-thumb-border, var(--i-thumb-border-on));
+  inset-inline-start: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
 }
 
 :host(:focus) .thumb {
-  border: var(--i-thumb-border-focus);
+  border: var(--std-switch-thumb-border, var(--i-thumb-border-focus));
 }
 
 :host([on]:focus) .thumb {
-  border: var(--i-thumb-border-on-focus);
+  border: var(--std-switch-thumb-border, var(--i-thumb-border-on-focus));
 }
 
 :host([on]:not(:disabled):hover) .thumb {
-  inset-inline-start: calc(100% - var(--i-thumb-width-hover) - var(--i-thumb-margin-end));
+  inset-inline-start: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width-hover)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
 }
 `;
 
@@ -239,21 +237,18 @@ const kSwitchStyleMaterial = `
   block-size: 20px;
   --std-switch-track-height: 14px;
   --std-switch-track-background: rgba(0,0,0,0.4);
-  --std-switch-track-background-on: rgba(63,81,181,0.5);
   --std-switch-track-border: none;
-  --std-switch-track-border-on: none;
-  --std-switch-track-border-on-active: none;
   --std-switch-thumb-margin-start: 0px;
   --std-switch-thumb-margin-end: 0px;
   --std-switch-thumb-width: 20px;
-  --std-switch-thumb-width-hover: 20px;
   --std-switch-thumb-height: 20px;
   --std-switch-thumb-shadow: 0 1px 5px 0 rgba(0,0,0,0.6);
   --std-switch-thumb-border: none;
-  --std-switch-thumb-border-focus: none;
-  --std-switch-thumb-border-on: none;
-  --std-switch-thumb-border-on-focus: none;
-  --std-switch-thumb-background-on: rgb(63,81,181);
+}
+
+:host([on]) {
+  --std-switch-track-background: rgba(63,81,181,0.5);
+  --std-switch-thumb-background: rgb(63,81,181);
 }
 
 `;
@@ -263,21 +258,46 @@ const kSwitchStyleCocoa = `
   inline-size: 51px;
   block-size: 31px;
   --std-switch-track-radius: 15px;
-  --std-switch-track-background-on: #4ad963;
   --std-switch-track-border: 1px solid lightgray;
-  --std-switch-track-border-on: 1px solid #4ad963;
   --std-switch-thumb-height: 29px;
   --std-switch-thumb-width: 29px;
-  --std-switch-thumb-width-hover: 29px;
   --std-switch-thumb-border: none;
-  --std-switch-thumb-border-on: none;
   --std-switch-thumb-margin-start: 1px;
   --std-switch-thumb-margin-end: 1px;
   --std-switch-thumb-shadow: 0px 3px 4px 1px rgba(0,0,0,0.2);
 }
+
+:host([on]) {
+  --std-switch-track-background: #4ad963;
+  --std-switch-track-border: 1px solid #4ad963;
+}
 `;
 
-const kSwitchStyleFluent = ``;
+const kSwitchStyleFluent = `
+:host {
+  inline-size: 44px;
+  block-size: 20px;
+  --std-switch-track-border: 2px solid #333333;
+  --std-switch-thumb-height: 10px;
+  --std-switch-thumb-width: 10px;
+  --std-switch-thumb-border: none;
+  --std-switch-thumb-background: #333333;
+  --std-switch-thumb-margin-start: 5px;
+  --std-switch-thumb-margin-end: 5px;
+}
+
+:host([on]) {
+  --std-switch-track-border: 2px solid #4cafff;
+  --std-switch-track-background: #4cafff;
+  --std-switch-thumb-background: white;
+}
+
+:host(:active) {
+  --std-switch-track-border: 2px solid darkgray;
+  --std-switch-track-background: darkgray;
+  --std-switch-thumb-background: white;
+}
+`;
 
 
 let meterSheet;
@@ -399,6 +419,12 @@ export class StdSwitchElement extends HTMLElement {
     this._trackElement.value = this.on ? 100 : 0;
     this._thumbElement = container.appendChild(doc.createElement('span'));
     this._thumbElement.className = 'thumb';
+
+    if (!this.hasAttribute('tabindex'))
+      this.setAttribute('tabindex', '0');
+    if (!this.hasAttribute('aria-role'))
+      this.setAttribute('aria-role', 'switch');
+    // TODO(tkent): aria-checked=true/false, keyboard operation
   }
 
   _onClick(event) {
