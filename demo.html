@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<title>Demo for &lt;std-switch></title>
 <script type="module" src="src/switch.mjs"></script>
 <style>
 internal-meter, std-switch {
   margin: 0.2em;
+}
+  
+.container {
+  border: 2px dashed lightgray;
+  padding: 8px;
+  margin: 8px;
   zoom: 2;
 }
 </style>
@@ -15,32 +22,32 @@ internal-meter, std-switch {
 <std-switch style="width: 100px; height:40px" ></std-switch>
 
 </div>
-<div dir=rtl>
+<div dir=rtl class=container>
 <label>RTL: <std-switch tabindex=0></std-switch></label>
 </div>
 
-<div style="writing-mode: vertical-rl;">
+<div style="writing-mode: vertical-rl;" class=container>
 <p style="font-size:32px;">Vertial wirting</p>
 <std-switch tabindex=0></std-switch>
 <label dir=rtl>RTL: <std-switch tabindex=0></std-switch></label>
 </div>
 
-<div style="--std-control-theme: material">
+<div class=container style="--std-control-theme: material">
   <p><code>--std-control-theme: material</code></p>
   <std-switch></std-switch><std-switch on></std-switch>
 </div>
 
-<div style="--std-control-theme: cocoa">
+<div class=container style="--std-control-theme: cocoa">
   <p><code>--std-control-theme: cocoa</code></p>
   <std-switch></std-switch><std-switch on></std-switch>
 </div>
 
-<div style="--std-control-theme: fluent">
+<div class=container style="--std-control-theme: fluent">
   <p><code>--std-control-theme: fluent</code></p>
   <std-switch></std-switch><std-switch on></std-switch>
 </div>
 
-<div style="--std-control-theme: match-platform">
+<div class=container style="--std-control-theme: match-platform">
   <p><code>--std-control-theme: match-platform</code></p>
   <p id="platform-message"></p>
   <std-switch></std-switch><std-switch on></std-switch>
@@ -59,5 +66,5 @@ function logEvent(event) {
 
 document.addEventListener('input', logEvent);
 document.addEventListener('change', logEvent);
-document.querySelector('#platform-message').textContent = `navigator.platform: "${navigator.platform}"`;
+document.querySelector('#platform-message').innerHTML = `navigator.platform: <var>${navigator.platform}</var>`;
 </script>
