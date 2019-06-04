@@ -26,6 +26,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+'use strict'; // This is not necessary for a module.
+
 // https://html.spec.whatwg.org/C/common-dom-interfaces.html#reflecting-content-attributes-in-idl-attributes
 
 function installBoolReflection(obj, attrName, propName = attrName) {
@@ -104,14 +106,15 @@ const kSwitchStyle = `
   inline-size: 54px;
   block-size: 26px;
   box-sizing: border-box;
-  vertical-align: bottom;
+  vertical-align: middle;
   user-select: none;
 
   /* Internal variables based on exposed variables */
   --i-color-on: var(--std-switch-color-on, #0077ff);
 }
 
-:host(:disabled) {
+:host(:disabled),
+:host([disabled]) {
   opacity: 0.4;
 }
 
@@ -229,6 +232,22 @@ internal-meter {
 :host([on]:not(:disabled):hover) .thumb {
   inset-inline-start: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width-hover)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
 }
+
+@supports not (inset-inline-start: 0px) {
+
+.thumb {
+  left: var(--std-switch-thumb-margin-start, var(--i-thumb-margin-start));
+}
+
+:host([on]) .thumb {
+  left: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
+}
+
+:host([on]:not(:disabled):hover) .thumb {
+  left: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width-hover)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
+}
+
+}
 `;
 
 const kSwitchStyleMaterial = `
@@ -238,6 +257,7 @@ const kSwitchStyleMaterial = `
   --std-switch-track-height: 14px;
   --std-switch-track-background: rgba(0,0,0,0.4);
   --std-switch-track-border: none;
+  --std-switch-track-shadow: none;
   --std-switch-thumb-margin-start: 0px;
   --std-switch-thumb-margin-end: 0px;
   --std-switch-thumb-width: 20px;
@@ -251,6 +271,18 @@ const kSwitchStyleMaterial = `
   --std-switch-thumb-background: rgb(63,81,181);
 }
 
+.ripple {
+  display: inline-block;
+  position: absolute;
+  opacity: 0;
+  background: gray;
+  inset-inline-start: 10px;
+  inset-block-start: 10px;
+  inline-size: 0px;
+  block-size: 0px;
+  border-radius: 0px;
+  pointer-events: none;
+}
 `;
 
 const kSwitchStyleCocoa = `
@@ -259,6 +291,7 @@ const kSwitchStyleCocoa = `
   block-size: 31px;
   --std-switch-track-radius: 15px;
   --std-switch-track-border: 1px solid lightgray;
+  --std-switch-track-shadow: none;
   --std-switch-thumb-height: 29px;
   --std-switch-thumb-width: 29px;
   --std-switch-thumb-border: none;
@@ -278,6 +311,7 @@ const kSwitchStyleFluent = `
   inline-size: 44px;
   block-size: 20px;
   --std-switch-track-border: 2px solid #333333;
+  --std-switch-track-shadow: none;
   --std-switch-thumb-height: 10px;
   --std-switch-thumb-width: 10px;
   --std-switch-thumb-border: none;
@@ -358,23 +392,27 @@ class InternalMeterElement extends HTMLElement {
 // Need scoped registry? https://github.com/w3c/webcomponents/issues/716
 customElements.define('internal-meter', InternalMeterElement);
 
-export class StdSwitchElement extends HTMLElement {
+class StdSwitchElement extends HTMLElement {
   static get formAssociated() { return true; }
+  static get observedAttributes() { return ['on']; }
 
   //checked = false;
   //_internals = null;
 
   constructor() {
     super();
-    if (HTMLElement.prototype.attachInternals)
+    if (HTMLElement.prototype.attachInternals) {
       this._internals = this.attachInternals();
+      this._internals.setFormValue('off');
+    }
     installBoolReflection(this, 'disabled');
     installBoolReflection(this, 'on');
     installStringReflection(this, 'name');
     this.addEventListener('click', this._onClick.bind(this));
+    this.addEventListener('keypress', this._onKeyPress.bind(this));
   }
 
-  get form() { return this._internals.form; }
+  get form() { return this._internals ? this._internals.form : null; }
   get type() { return this.localName; }
 
   connectedCallback() {
@@ -403,6 +441,45 @@ export class StdSwitchElement extends HTMLElement {
       }
       this._root.querySelector('style').textContent = styleText;
     }
+    // TODO(tkent): Having theme-specific code isn't smart.
+    if (theme == THEME_MATERIAL) {
+      this._rippleElement = this._thumbElement.appendChild(this.ownerDocument.createElement('span'));
+      this._rippleElement.className = 'ripple';
+      const keyframes = {
+	  left: ['10px', '-15px'],
+	  top: ['10px', '-15px'],
+	  width: ['0px', '50px'],
+	  height: ['0px', '50px'],
+	  borderRadius: ['0px', '25px'],
+          opacity: [0, 0.3]
+      };
+      this.addEventListener('mousedown', event => {
+        this._rippleElement.animate(keyframes, {
+	  duration: 100,
+	  fill: 'forwards'});
+      });
+      this.addEventListener('mouseup', event => {
+        this._rippleElement.animate({
+	  opacity: [0.3, 0, 0],
+	  width: ['50px', '50px', '0'],
+	  height: ['50px', '50px', '0'],
+	  left: ['-15px', '-15px', '10px'],
+	  top: ['-15px', '-15px', '10px']
+	}, {
+	  duration: 1000,
+	  fill: 'forwards'});
+      });
+    }
+  }
+
+  attributeChangedCallback(attrName, oldValue, newValue) {
+    if (attrName == 'on') {
+      if (this._internals)
+        this._internals.setFormValue(newValue != null ? 'on' : 'off');
+      if (this._trackElement)
+	this._trackElement.value = newValue != null ? 100 : 0;
+      this.setAttribute('aria-checked', newValue != null ? 'true' : 'false');
+    }
   }
 
   _initializeDOM() {
@@ -424,16 +501,27 @@ export class StdSwitchElement extends HTMLElement {
       this.setAttribute('tabindex', '0');
     if (!this.hasAttribute('aria-role'))
       this.setAttribute('aria-role', 'switch');
-    // TODO(tkent): aria-checked=true/false, keyboard operation
+    this.setAttribute('aria-checked', this.on ? 'true' : 'false');
   }
 
   _onClick(event) {
+    if (this.hasAttribute('disabled') || this.matches(':disabled'))
+      return;
     this.on = !this.on;
-    this._trackElement.value = this.on ? 100 : 0;
     queueMicrotask(() => {
       this.dispatchEvent(new Event('input', {bubbles: true, composed: true}));
       this.dispatchEvent(new Event('change', {bubbles: true, composed: true}));
     });
+  }
+
+  _onKeyPress(event) {
+    if (this.hasAttribute('disabled') || this.matches(':disabled'))
+      return;
+    console.dir(event);
+    if (event.code == 'Space') {
+      event.preventDefault();
+      this._onClick(event);
+    }
   }
 }
 
