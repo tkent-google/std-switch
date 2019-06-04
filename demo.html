@@ -6,7 +6,22 @@
 internal-meter, std-switch {
   margin: 0.2em;
 }
-  
+
+.wide {
+  width: 10em;
+  --std-switch-track-border: 1px inset lightgray;
+  --std-switch-track-height: 10px;
+  --std-switch-track-radius: 5px;
+  --std-switch-track-background: gray;
+  --std-switch-track-shadow: none;
+  --std-switch-thumb-width: 22px;
+  --std-switch-thumb-border: 1px solid black;
+}
+
+[on].wide {
+  --std-switch-track-background: lime;
+}
+
 .container {
   border: 2px dashed lightgray;
   padding: 8px;
@@ -16,32 +31,42 @@ internal-meter, std-switch {
 </style>
 
 <h2>Requirements</h2>
-<dl>
-  <dt>Chrome</dt>
-  <dd>74+ with chrome://flags/#enable-experimental-web-platform-features enabled for CSSLogical flag.</dd>
-  <dt>Edge and IE</dt>
-  <dd>don't work due to a lack of Custom Elements.</dd>
-  <dt>Firefox</dt>
-  <dd>Works fine with 67+.</dd>
-  <dt>Safari</dt>
-  <dd>Doesn't work due to a lack of CSS logical properties.</dd>
-</dl>  
+<ul>
+<li>Custom elements support: <span id="ce-support">&#x274c; (&lt;std-switch> doesn't work at all)</span>
+<li>Form-associated custom elements support: <span id="face-support">&#x274c; (&lt;std-switch> doesn't support form submission)</span>
+<li><code>inset-inline-start</code> CSS property support: <span id="inset-support">&#x274c; (&lt;std-switch> doesn't work in RTL and vertical writing)</span>
+</ul>
+<script>
+let $ = document.querySelector.bind(document);
+if (window.customElements)
+  $('#ce-support').textContent = '\u2705';
+if (window.ElementInternals && ElementInternals.prototype.setFormValue)
+  $('#face-support').textContent = '\u2705';
+if (CSS.supports('inset-inline-start', '0px'))
+  $('#inset-support').textContent = '\u2705';
+</script>
     
 <h2><code>&lt;std-switch></code></h2>
 
 <div class=container>
-<std-switch></std-switch><br>
-<std-switch style="width: 100px; height:40px" ></std-switch>
-
+  <label>Normal: <std-switch></std-switch></label><br>
+  <label>Specify width/height: <std-switch style="width: 100px; height:40px" ></label></std-switch>
+  <span>Customization: <std-switch class=wide></std-switch></span>
 </div>
 <div dir=rtl class=container>
-<label>RTL: <std-switch tabindex=0></std-switch></label>
+<label>RTL: <std-switch ></std-switch></label>
 </div>
 
 <div style="writing-mode: vertical-rl;" class=container>
 <p style="font-size:32px;">Vertial wirting</p>
-<std-switch tabindex=0></std-switch>
-<label dir=rtl>RTL: <std-switch tabindex=0></std-switch></label>
+<std-switch></std-switch>
+<label dir=rtl>RTL: <std-switch></std-switch></label>
+</div>
+
+<div class=container style="--std-control-theme: match-platform">
+  <p><code>--std-control-theme: match-platform</code></p>
+  <p id="platform-message"></p>
+  <std-switch></std-switch><std-switch on></std-switch>
 </div>
 
 <div class=container style="--std-control-theme: material">
@@ -56,12 +81,6 @@ internal-meter, std-switch {
 
 <div class=container style="--std-control-theme: fluent">
   <p><code>--std-control-theme: fluent</code></p>
-  <std-switch></std-switch><std-switch on></std-switch>
-</div>
-
-<div class=container style="--std-control-theme: match-platform">
-  <p><code>--std-control-theme: match-platform</code></p>
-  <p id="platform-message"></p>
   <std-switch></std-switch><std-switch on></std-switch>
 </div>
 
