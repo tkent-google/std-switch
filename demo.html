@@ -25,8 +25,7 @@ internal-meter, std-switch {
 .container {
   border: 2px dashed lightgray;
   padding: 8px;
-  margin: 8px;
-  zoom: 2;
+  margin: 24px;
 }
 </style>
 
@@ -50,16 +49,16 @@ if (CSS.supports('inset-inline-start', '0px'))
 
 <div class=container>
   <label>Normal: <std-switch></std-switch></label><br>
-  <label>Specify width/height: <std-switch style="width: 100px; height:40px" ></label></std-switch>
-  <span>Customization: <std-switch class=wide></std-switch></span>
+  <label>Specify width/height: <std-switch style="width: 100px; height:40px" ></std-switch></label><br>
+  <span>Customization; thin track: <std-switch class=wide></std-switch></span>
 </div>
 <div dir=rtl class=container>
 <label>RTL: <std-switch ></std-switch></label>
 </div>
 
 <div style="writing-mode: vertical-rl;" class=container>
-<p style="font-size:32px;">Vertial wirting</p>
-<std-switch></std-switch>
+<p>Vertial wirting
+  <std-switch></std-switch></p>
 <label dir=rtl>RTL: <std-switch></std-switch></label>
 </div>
 
