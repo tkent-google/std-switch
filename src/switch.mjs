@@ -96,7 +96,7 @@ const kMeterStyle = `
   vertical-align: top;
   box-sizing: border-box;
   box-shadow: var(--std-meter-value-shadow);
-  transition: all linear 0.1s;
+  transition: var(--std-meter-value-transition, all linear 0.1s);
 }`;
 
 const kSwitchStyle = `
@@ -140,7 +140,8 @@ internal-meter {
   --i-track-shadow-on-active: 0 0 0 2px #f8f8f8;
 
   --std-meter-value-radius: var(--std-switch-track-inner-radius, 11px);
-  --std-meter-value-background: var(--i-track-background-on);
+  --std-meter-value-background: var(--std-switch-track-background-on, var(--i-track-background-on));
+  --std-meter-value-transition: var(--std-switch-track-transition);
 
   background: var(--std-switch-track-background, var(--i-track-background));
   border: var(--std-switch-track-border, var(--i-track-border));
@@ -149,11 +150,10 @@ internal-meter {
   padding: var(--std-switch-track--padding, var(--i-track-padding));
   inline-size: 100%;
   block-size: var(--std-switch-track-height, var(--i-track-height));
-  transition: all linear 0.1s; /* TODO(customizable) */
+  transition: var(--std-switch-track-transition, all linear 0.1s);
 }
 
 :host([on]) internal-meter {
-  --std-meter-value-background: var(--std-switch-track-background, var(--i-track-background-on));
   border: var(--std-switch-track-border, var(--i-track-border-on));
   box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow-on));
 }
@@ -173,7 +173,7 @@ internal-meter {
 }
 
 :host([on]:not(:disabled):active) internal-meter {
-  --std-meter-value-background: var(--std-switch-track-background, var(--i-track-background-on-active));
+  --std-meter-value-background: var(--std-switch-track-background-on, var(--i-track-background-on-active));
   border: var(--std-switch-track-border, var(--i-track-border-on-active));
   box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow-on-active));
 }
@@ -208,7 +208,7 @@ internal-meter {
   background: var(--std-switch-thumb-background, var(--i-thumb-background));
   box-sizing: border-box;
   inset-inline-start: var(--std-switch-thumb-margin-start, var(--i-thumb-margin-start));
-  transition: all linear 0.1s; /* TODO(customizable) */
+  transition: var(--std-switch-thumb-transition, all linear 0.1s);
   box-shadow: var(--std-switch-thumb-shadow);
 }
 
@@ -231,6 +231,10 @@ internal-meter {
 
 :host([on]:not(:disabled):hover) .thumb {
   inset-inline-start: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width-hover)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
+}
+
+:host(:not(:focus-visible):focus) {
+  outline: none;
 }
 
 @supports not (inset-inline-start: 0px) {
@@ -256,6 +260,7 @@ const kSwitchStyleMaterial = `
   block-size: 20px;
   --std-switch-track-height: 14px;
   --std-switch-track-background: rgba(0,0,0,0.4);
+  --std-switch-track-background-on: rgba(63,81,181,0.5);
   --std-switch-track-border: none;
   --std-switch-track-shadow: none;
   --std-switch-thumb-margin-start: 0px;
@@ -267,7 +272,6 @@ const kSwitchStyleMaterial = `
 }
 
 :host([on]) {
-  --std-switch-track-background: rgba(63,81,181,0.5);
   --std-switch-thumb-background: rgb(63,81,181);
 }
 
@@ -293,6 +297,7 @@ const kSwitchStyleCocoa = `
   --std-switch-track-border: 1px solid lightgray;
   --std-switch-track-shadow: none;
   --std-switch-thumb-height: 29px;
+  --std-switch-track-background-on: #4ad963;
   --std-switch-thumb-width: 29px;
   --std-switch-thumb-border: none;
   --std-switch-thumb-margin-start: 1px;
@@ -301,7 +306,6 @@ const kSwitchStyleCocoa = `
 }
 
 :host([on]) {
-  --std-switch-track-background: #4ad963;
   --std-switch-track-border: 1px solid #4ad963;
 }
 `;
@@ -310,6 +314,7 @@ const kSwitchStyleFluent = `
 :host {
   inline-size: 44px;
   block-size: 20px;
+  --std-switch-track-background-on: #4cafff;
   --std-switch-track-border: 2px solid #333333;
   --std-switch-track-shadow: none;
   --std-switch-thumb-height: 10px;
@@ -322,7 +327,6 @@ const kSwitchStyleFluent = `
 
 :host([on]) {
   --std-switch-track-border: 2px solid #4cafff;
-  --std-switch-track-background: #4cafff;
   --std-switch-thumb-background: white;
 }
 
@@ -392,7 +396,7 @@ class InternalMeterElement extends HTMLElement {
 // Need scoped registry? https://github.com/w3c/webcomponents/issues/716
 customElements.define('internal-meter', InternalMeterElement);
 
-class StdSwitchElement extends HTMLElement {
+export class StdSwitchElement extends HTMLElement {
   static get formAssociated() { return true; }
   static get observedAttributes() { return ['on']; }
 
