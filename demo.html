@@ -34,6 +34,7 @@ internal-meter, std-switch {
 <li>Custom elements support: <span id="ce-support">&#x274c; (&lt;std-switch> doesn't work at all)</span>
 <li>Form-associated custom elements support: <span id="face-support">&#x274c; (&lt;std-switch> doesn't support form submission)</span>
 <li><code>inset-inline-start</code> CSS property support: <span id="inset-support">&#x274c; (&lt;std-switch> doesn't work in RTL and vertical writing)</span>
+<li><code>:focus-visible</code> CSS pseudo class support: <span id="focus-visible-support">&#x274c; (&lt;std-switch> has focus ring on click)</span>
 </ul>
 <script>
 let $ = document.querySelector.bind(document);
@@ -43,14 +44,22 @@ if (window.ElementInternals && ElementInternals.prototype.setFormValue)
   $('#face-support').textContent = '\u2705';
 if (CSS.supports('inset-inline-start', '0px'))
   $('#inset-support').textContent = '\u2705';
+try {
+  document.querySelector(':focus-visible');
+  $('#focus-visible-support').textContent = '\u2705';
+} catch (e) {}
 </script>
     
 <h2><code>&lt;std-switch></code></h2>
 
 <div class=container>
-  <label>Normal: <std-switch></std-switch></label><br>
-  <label>Specify width/height: <std-switch style="width: 100px; height:40px" ></std-switch></label><br>
-  <span>Customization; thin track: <std-switch class=wide></std-switch></span>
+  <form action="https://httpbin.org/get" target="_blank">
+  <label>Normal: <std-switch name=n1></std-switch></label> <std-switch on name=n2></std-switch><br>
+  <label>Disabled: <std-switch name=d1 disabled></std-switch></label><br>
+  <label>Specify width/height: <std-switch name=wh style="width: 100px; height:40px" ></std-switch></label><br>
+  <span>Customization; thin track: <std-switch class=wide name=thin></std-switch></span>
+  <input type=submit>
+  </form>
 </div>
 <div dir=rtl class=container>
 <label>RTL: <std-switch ></std-switch></label>
@@ -64,7 +73,7 @@ if (CSS.supports('inset-inline-start', '0px'))
 
 <div class=container style="--std-control-theme: match-platform">
   <p><code>--std-control-theme: match-platform</code></p>
-  <p id="platform-message"></p>
+  <p id="platform-message">navigator.platform: ...</p>
   <std-switch></std-switch><std-switch on></std-switch>
 </div>
 
