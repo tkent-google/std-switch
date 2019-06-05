@@ -13,13 +13,10 @@ internal-meter, std-switch {
   --std-switch-track-height: 10px;
   --std-switch-track-radius: 5px;
   --std-switch-track-background: gray;
+  --std-switch-track-background-on: lime;
   --std-switch-track-shadow: none;
   --std-switch-thumb-width: 22px;
   --std-switch-thumb-border: 1px solid black;
-}
-
-[on].wide {
-  --std-switch-track-background: lime;
 }
 
 .container {
@@ -57,7 +54,7 @@ try {
   <label>Normal: <std-switch name=n1></std-switch></label> <std-switch on name=n2></std-switch><br>
   <label>Disabled: <std-switch name=d1 disabled></std-switch></label><br>
   <label>Specify width/height: <std-switch name=wh style="width: 100px; height:40px" ></std-switch></label><br>
-  <span>Customization; thin track: <std-switch class=wide name=thin></std-switch></span>
+  <span>Customization; thin track: <std-switch class=wide name=thin></std-switch></span><br>
   <input type=submit>
   </form>
 </div>
