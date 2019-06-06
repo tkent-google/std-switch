@@ -503,8 +503,8 @@ export class StdSwitchElement extends HTMLElement {
 
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', '0');
-    if (!this.hasAttribute('aria-role'))
-      this.setAttribute('aria-role', 'switch');
+    if (!this.hasAttribute('role'))
+      this.setAttribute('role', 'switch');
     this.setAttribute('aria-checked', this.on ? 'true' : 'false');
   }
 
