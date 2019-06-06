@@ -406,7 +406,16 @@ class InternalMeterElement extends HTMLElement {
       throw new RangeError();
     let oldValue = this._value;
     this._value = i;
-    this._barElement.style.inlineSize = i + '%';
+    if (this._barElement) {
+      this._barElement.style.inlineSize = i + '%';
+      if ((oldValue < 50) != (i < 50)) {
+        let slot = this._barElement.nextSibling || this._barElement.firstChild;
+        if (i < 50)
+          this._barElement.parentNode.appendChild(slot);
+        else
+          this._barElement.appendChild(slot);
+      }
+    }
   }
 
   _initializeDOM() {
@@ -424,6 +433,10 @@ class InternalMeterElement extends HTMLElement {
     this._barElement = doc.createElement('span');
     this._barElement.className = 'bar';
     root.appendChild(this._barElement);
+    if (this._value < 50)
+      root.appendChild(doc.createElement('slot'));
+    else
+      this._barElement.appendChild(doc.createElement('slot'));
   }
 }
 
@@ -532,6 +545,7 @@ export class StdSwitchElement extends HTMLElement {
     this._root.appendChild(container);
     this._trackElement = container.appendChild(doc.createElement('internal-meter'));
     this._trackElement.value = this.on ? 100 : 0;
+    this._trackElement.appendChild(doc.createElement('slot'));
     this._thumbElement = container.appendChild(doc.createElement('span'));
     this._thumbElement.className = 'thumb';
 
