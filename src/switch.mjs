@@ -58,6 +58,41 @@ function installStringReflection(obj, attrName, propName = attrName) {
   });
 }
 
+function installFormAssociatedPropertiesAndFunctions(obj, internals) {
+  installBoolReflection(obj, 'disabled');
+  installStringReflection(obj, 'name');
+
+  if (!internals)
+    return;
+  Object.defineProperty(obj, 'form', {
+    enumerable: true,
+    get() { return internals.form; }
+  });
+  Object.defineProperty(obj, 'willValidate', {
+    enumerable: true,
+    get() { return internals.willValidate; }
+  });
+  Object.defineProperty(obj, 'validity', {
+    enumerable: true,
+    get() { return internals.validity; }
+  });
+  Object.defineProperty(obj, 'validationMessage', {
+    enumerable: true,
+    get() { return internals.validationMessage; }
+  });
+  Object.defineProperty(obj, 'labels', {
+    enumerable: true,
+    get() { return internals.labels; }
+  });
+  let prototype = Object.getPrototypeOf(obj);
+  obj.checkValidity = () => {
+    return internals.checkValidity();
+  };
+  obj.reportValidity = () => {
+    return internals.reportValidity();
+  };
+}
+
 const PROP_CONTROL_THEME = '--std-control-theme';
 const THEME_DEFAULT = 'default';
 const THEME_MATCH_PLATFORM = 'match-platform';
@@ -409,9 +444,8 @@ export class StdSwitchElement extends HTMLElement {
       this._internals = this.attachInternals();
       this._internals.setFormValue('off');
     }
-    installBoolReflection(this, 'disabled');
+    installFormAssociatedPropertiesAndFunctions(this, this._internals);
     installBoolReflection(this, 'on');
-    installStringReflection(this, 'name');
     this.addEventListener('click', this._onClick.bind(this));
     this.addEventListener('keypress', this._onKeyPress.bind(this));
   }
