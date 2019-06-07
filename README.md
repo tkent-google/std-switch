@@ -47,87 +47,87 @@ Users can turn on/off the switch by clicking it, and submitting the form will ha
 ## Proposed API
 
 The element is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
-```import 'std:elements/switch'``` defines ```<std-switch>``` element and ```StdSwitchElement``` interface.
+`import 'std:elements/switch'` defines `<std-switch>` element and `StdSwitchElement` interface.
 
-```<std-switch>``` is similar to ```<input type=checkbox>``` in terms of API. A ```<std-switch>``` instance has two states; "off" and "on".  It doesn't support indeterminate state like the checkbox.
+`<std-switch>` is similar to `<input type=checkbox>` in terms of API. A `<std-switch>` instance has two states; "off" and "on".  It doesn't support indeterminate state like the checkbox.
 
 ### Content attributes:
 
 * [Global attributes](https://html.spec.whatwg.org/multipage/dom.html#global-attributes)
-* ```autocomplete```
-* ```disabled```
-* ```form```
-* ```name```
-* ```required```
+* `autocomplete`
+* `disabled`
+* `form`
+* `name`
+* `required`
 
-TODO: Supports ```autofocus```, which should be a global attribute. ([whatwg/html#4563](https://github.com/whatwg/html/issues/4563))
+TODO: Supports `autofocus`, which should be a global attribute. ([whatwg/html#4563](https://github.com/whatwg/html/issues/4563))
 
 These attributes should work same as existing form controls.
 
-```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes ([Issue #2](https://github.com/tkent-google/std-switch/issues/2)).  There are some approaches for them. We have not decided yet. ([Issue #4](https://github.com/tkent-google/std-switch/issues/4))
+`<std-switch>` should support `checked` and `defaultchecked` attributes ([Issue #2](https://github.com/tkent-google/std-switch/issues/2)).  There are some approaches for them. We have not decided yet. ([Issue #4](https://github.com/tkent-google/std-switch/issues/4))
 
-* A) Compatible with ```<input type=checkbox>```<br>
-```checked``` attribute represents the default state, and ```defaultChecked``` property reflects on ```checked``` attribute. No attribute mapped to ```checked``` property.
+* A) Compatible with `<input type=checkbox>`<br>
+`checked` attribute represents the default state, and `defaultChecked` property reflects on `checked` attribute. No attribute mapped to `checked` property.
 * B) Simple mappings<br>
-```defaultChecked``` property reflects on ```defaultchecked``` attribute value, and ```checked``` property reflects on ```checked``` attribute.  Code like ```switch.checked = true``` adds ```checked``` attribute.  We need to specify ```defaultchecked``` attribute if we want to reset the element to on state, like ```<std-switch defaultchecked checked>```
+`defaultChecked` property reflects on `defaultchecked` attribute value, and `checked` property reflects on `checked` attribute.  Code like `switch.checked = true` adds `checked` attribute.  We need to specify `defaultchecked` attribute if we want to reset the element to on state, like `<std-switch defaultchecked checked>`
 
 ### Properties and functions
 
-* ```checked```  - Represents the element's state.  See the previous section
-* ```defaultChecked``` - Represents the default state.  See the previous section
-* ```disabled``` - Same as existing form controls
-* ```form``` - Same as existing form controls
-* ```labels``` - Same as existing form controls
-* ```name``` - Same as existing form controls
-* ```type``` - returns ```'std-switch'```
-* ```willValidate``` - Same as existing form controls
-* ```validationMessage``` - Same as existing form controls
+* `checked`  - Represents the element's state.  See the previous section
+* `defaultChecked` - Represents the default state.  See the previous section
+* `disabled` - Same as existing form controls
+* `form` - Same as existing form controls
+* `labels` - Same as existing form controls
+* `name` - Same as existing form controls
+* `type` - returns `'std-switch'`
+* `willValidate` - Same as existing form controls
+* `validationMessage` - Same as existing form controls
 
-* ```checkValidity()``` - Same as existing form controls
-* ```reportValidity()``` - Same as existing form controls
-* ```setCustomValidity(errorMessage)``` - Same as existing form controls
+* `checkValidity()` - Same as existing form controls
+* `reportValidity()` - Same as existing form controls
+* `setCustomValidity(errorMessage)` - Same as existing form controls
 
 
 ### Pseudo classes
 
-* Global ones such as ```:focus``` ```:hover``` ```:target```
-* ```:valid``` - match if the element has no ```required``` attribute, of if the element has ```required``` attribute and the state is on.
-* ```:invalid``` - match if the element doesn't match to ```:valid```.
-* ```:disabled``` - match if the element has ```disabled``` attribute, or an ancestor ```<fieldset>``` has ```disabled``` attribute.
-* ```:enabled``` - match if the element doesn't match to ```:disabled```.
+* Global ones such as `:focus` `:hover` `:target`
+* `:valid` - match if the element has no `required` attribute, of if the element has `required` attribute and the state is on.
+* `:invalid` - match if the element doesn't match to `:valid`.
+* `:disabled` - match if the element has `disabled` attribute, or an ancestor `<fieldset>` has `disabled` attribute.
+* `:enabled` - match if the element doesn't match to `:disabled`.
 
-TODO: Supports ```:checked``` ([Issue #3](https://github.com/tkent-google/std-switch/issues/3)), ```:required```, and ```:optional``` ([w3c/webcomponents#813](https://github.com/w3c/webcomponents/issues/813))
+TODO: Supports `:checked` ([Issue #3](https://github.com/tkent-google/std-switch/issues/3)), `:required`, and `:optional` ([w3c/webcomponents#813](https://github.com/w3c/webcomponents/issues/813))
 
 
 ### Events
 
-```<std-switch>``` dispatches ```input``` and ```change``` events when a user changes the element's state.
+`<std-switch>` dispatches `input` and `change` events when a user changes the element's state.
 
 
 ### Relationship with other elements
 
-* ```form```<br>
-  Markup like ```<form>...<std-switch></std-switch>...</form>``` associates the ```<std-switch>``` element to the ```<form>```.   ```<form>```'s ```elements``` property lists the ```<std-switch>```, and submitting the ```<form>``` adds an entry for the ```<std-switch>```.
-* ```fieldset```<br>
-  Markup like ```<fieldset>...<std-switch></std-switch>...</fieldset>``` associates the ```<std-switch>``` element to the ```<fieldset>```.   ```<fieldset>```'s ```elements``` property lists the ```<std-switch>```, and disabling the ```<fieldset>``` also disables the ```<std-switch>``` implicitly.
-* ```label```<br>
-  Markup like ```<label>...<std-switch></std-switch></label>``` associates the ```<std-switch>``` element to the ```<label>```.  Clicking anywhere in the ```<label>``` changes the state of the ```<std-switch>```.
+* `form`<br>
+  Markup like `<form>...<std-switch></std-switch>...</form>` associates the `<std-switch>` element to the `<form>`.   `<form>`'s `elements` property lists the `<std-switch>`, and submitting the `<form>` adds an entry for the `<std-switch>`.
+* `fieldset`<br>
+  Markup like `<fieldset>...<std-switch></std-switch>...</fieldset>` associates the `<std-switch>` element to the `<fieldset>`.   `<fieldset>`'s `elements` property lists the `<std-switch>`, and disabling the `<fieldset>` also disables the `<std-switch>` implicitly.
+* `label`<br>
+  Markup like `<label>...<std-switch></std-switch></label>` associates the `<std-switch>` element to the `<label>`.  Clicking anywhere in the `<label>` changes the state of the `<std-switch>`.
   
 
 ### Form submission
 
 There are two approaches. We have not decided yet. ([Issue #5](https://github.com/tkent-google/std-switch/issues/5))
 
-* A) Compatible with ```<input type=checkbox>```<br>
- ```<std-swtich name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
+* A) Compatible with `<input type=checkbox>`<br>
+ `<std-swtich name=something>` with "off" state will send no entry.  One with "on" state will send `value` attribute value if it exists, or `something=on`.
 * B) Send state simply<br>
- ```<std-swtich name=something>``` with "off" state will send ```something=off```, one with "on" state will send ```something=on```.
+ `<std-swtich name=something>` with "off" state will send `something=off`, one with "on" state will send `something=on`.
 
 
 ### Appearance customization
 
 TODO: an easy flag to enable platform-dependent appearance ([Issue #6](https://github.com/tkent-google/std-switch/issues/6))
-When the flag is enabled, ```std-switch``` element is styled as UISwitch on iOS, [Material Design switch](https://material.io/design/components/selection-controls.html#switches) on Android, [Fluent design toggle switch](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles) on Windows.
+When the flag is enabled, `std-switch` element is styled as UISwitch on iOS, [Material Design switch](https://material.io/design/components/selection-controls.html#switches) on Android, [Fluent design toggle switch](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles) on Windows.
 
 TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](https://github.com/tkent-google/std-switch/issues/7))
 
@@ -136,7 +136,7 @@ TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](http
 ### Making &lt;input type=chekbox> customizable
 
 Providing a swtich control as a variant of &lt;input type=checkbox> would be possible.
-We can add ```switch``` content attribute, add ```swtich``` keyword to ```appearance``` CSS property, or something.
+We can add `switch` content attribute, add `swtich` keyword to `appearance` CSS property, or something.
 
 However, as decribed in 'Why a switch control?' section, using &lt;input type=checkbox>
 for a switch control is semantically incorrect.
@@ -155,7 +155,7 @@ and web developers won't see interoperablity issues with it at all.
 
 See [JavaScript Standard Library Proposal](https://github.com/tc39/proposal-javascript-standard-library/)
 
-## References &amp; Acknowledgements
+## References &amp; Acknowledgments
 
 * [whatwg/html#4180](https://github.com/whatwg/html/issues/4180) posted by Atishay Jain gave us a motivation to start this project.
 
