@@ -1,14 +1,29 @@
 # A standard 'Switch' form control
 
-This document explains a new HTML element for a 'switch' form control.  
+## Authors
 
-## Why a switch control?
+* Kent Tamura tkent@google.com
+
+## Introduction
+
+This document proposed a new HTML element for a 'switch' control.  It is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
+
+### Why a switch control?
 
 Many UI frameworks have switch controls to represent off/on states and ask a user to change the state.  As of April 2019 the HTML standard has a checkbox, which is functionally similar to switch control.  However:
 
 * Semantically, a switch and checkbox have different meanings, with a switch being more appropriate for turning things on/off. (See e.g. [Microsoft Fluent design guidelines](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles#choosing-between-toggle-switch-and-check-box), [Nielsen Norman Group](https://www.nngroup.com/articles/toggle-switch-guidelines/), [UX Planet](https://uxplanet.org/checkbox-vs-toggle-switch-7fc6e83f10b8).)
 * Switches and checkboxes manifest differently to accessibility technology: see the [`switch` ARIA role](http://w3c.github.io/aria/#switch).
 * It's hard to change checkbox's appearance to a switch-like appearance, for when that user experience is desired.
+
+## Goals
+
+* Identical appearance on all platforms and all supported browsers by default
+* Easy and flexible customization
+  * The switch control should provide a way to switch its appearance from the default one to platform-dependent one.
+  * The switch control should provide a way to customize color, size, radius, etc. of its visual parts.
+* API similar to existing form controls
+
 
 ## Sample code
 
@@ -27,15 +42,6 @@ This shows something like:<br> <img alt="Sample image" src=switch-example.png wi
 
 Users can turn on/off the switch by clicking it, and submitting the form will have an entry for the switch control.
 
-## Goals
-
-* Identical appearance on all platforms by default
-* Easy and flexible customization
-  * The switch control should provide a way to switch its appearance from the default one to platform-dependent one.<br>
-  * The switch control should provide a way to customize color, size, radius, etc. of its visual parts.
-* API similar to existing form controls
-
-
 ## Proposed API
 
 The element is provided as a [JavaScript Standard Library](https://github.com/tc39/proposal-javascript-standard-library/).
@@ -52,7 +58,7 @@ The element is provided as a [JavaScript Standard Library](https://github.com/tc
 * ```name```
 * ```required```
 
-TODO: Supports ```autofocus```
+TODO: Supports ```autofocus```, which should be a global attribute. ([whatwg/html#4563](https://github.com/whatwg/html/issues/4563))
 
 These attributes should work same as existing form controls.
 
@@ -88,7 +94,7 @@ These attributes should work same as existing form controls.
 * ```:disabled``` - match if the element has ```disabled``` attribute, or an ancestor ```<fieldset>``` has ```disabled``` attribute.
 * ```:enabled``` - match if the element doesn't match to ```:disabled```.
 
-TODO: Supports ```:checked``` ([Issue #3](https://github.com/tkent-google/std-switch/issues/3)), ```:required```, and ```:optional```
+TODO: Supports ```:checked``` ([Issue #3](https://github.com/tkent-google/std-switch/issues/3)), ```:required```, and ```:optional``` ([w3c/webcomponents#813](https://github.com/w3c/webcomponents/issues/813))
 
 
 ### Events
@@ -122,4 +128,15 @@ TODO: an easy flag to enable platform-dependent appearance ([Issue #6](https://g
 When the flag is enabled, ```std-switch``` element is styled as UISwitch on iOS, [Material Design switch](https://material.io/design/components/selection-controls.html#switches) on Android, [Fluent design toggle switch](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles) on Windows.
 
 TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](https://github.com/tkent-google/std-switch/issues/7))
+
+## Considered alternatives
+
+### Making &lt;input type=chekbox> customizable
+### Native implementation in UAs, or a built-in module
+
+## References &amp; Acknowledgements
+
+* [whatwg/html#4180](https://github.com/whatwg/html/issues/4180) posted by Atishay Jain gave us a motivation to start this project.
+
+
 
