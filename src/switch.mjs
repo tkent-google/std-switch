@@ -542,6 +542,7 @@ export class StdSwitchElement extends HTMLElement {
       this._root.appendChild(doc.createElement('style'));
     let container = doc.createElement('span');
     container.className = 'container';
+    container.setAttribute('aria-hidden', 'true');
     this._root.appendChild(container);
     this._trackElement = container.appendChild(doc.createElement('internal-meter'));
     this._trackElement.value = this.on ? 100 : 0;
