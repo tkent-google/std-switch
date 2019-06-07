@@ -44,7 +44,7 @@ Users can turn on/off the switch by clicking it, and submitting the form will ha
 
 ## Proposed API
 
-The element is provided as a [JavaScript Standard Library](https://github.com/tc39/proposal-javascript-standard-library/).
+The element is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
 ```import 'std:elements/switch'``` defines ```<std-switch>``` element and ```StdSwitchElement``` interface.
 
 ```<std-switch>``` is similar to ```<input type=checkbox>``` in terms of API. A ```<std-switch>``` instance has two states; "off" and "on".  It doesn't support indeterminate state like the checkbox.
@@ -132,7 +132,26 @@ TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](http
 ## Considered alternatives
 
 ### Making &lt;input type=chekbox> customizable
-### Native implementation in UAs, or a built-in module
+
+Providing a swtich control as a variant of &lt;input type=checkbox> would be possible.
+We can add ```switch``` content attribute, add ```swtich``` keyword to ```appearance``` CSS property, or something.
+
+However, as decribed in 'Why a switch control?' section, using &lt;input type=checkbox>
+for a switch control is semantically incorrect.
+Also, it would add complexity to UA implementations, and it's difficult to provide
+customization flexibility with a switch control implemented by these ways.
+
+### Native implementation in UAs vs. a built-in module
+
+Form control elements are major sources of interoperability issues.
+Native implementations likely introduce new interoperability issues.
+
+UAs can share a built-in module implementation because it's a JavaScript code,
+and web developers won't see interoperablity issues with it at all.
+
+### Third-party library, vs. a built-in module
+
+See [JavaScript Standard Library Proposal](https://github.com/tc39/proposal-javascript-standard-library/)
 
 ## References &amp; Acknowledgements
 
