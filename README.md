@@ -42,6 +42,8 @@ This shows something like:<br> <img alt="Sample image" src=switch-example.png wi
 
 Users can turn on/off the switch by clicking it, and submitting the form will have an entry for the switch control.
 
+[Demo page](https://tkent-google.github.io/std-switch/demo.html)
+
 ## Proposed API
 
 The element is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
