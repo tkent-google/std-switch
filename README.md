@@ -6,7 +6,7 @@
 
 ## Introduction
 
-This document proposed a new HTML element for a 'switch' control.  It is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
+This document proposes a new HTML element for a 'switch' control.  It is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
 
 ### Why a switch control?
 
