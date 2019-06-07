@@ -37,13 +37,22 @@ internal-meter, std-switch {
   float: right;
 }
 </style>
+<body>
+<h1>Demo of a prototype of <code>&lt;std-switch></code></h1>
+<p><a href="https://github.com/tkent-google/std-switch">Explaniner of <code>&lt;std-switch></code></p>
+<p>This page demonstrates how <code>&lt;std-switch></code> will work.
+  The current prototype is not expected to have production-level quality.
+  It has many bugs and missing features.</p>
 
 <h2>Requirements</h2>
 <ul>
 <li>Custom elements support: <span id="ce-support">&#x274c; (&lt;std-switch> doesn't work at all)</span>
-<li>Form-associated custom elements support: <span id="face-support">&#x274c; (&lt;std-switch> doesn't support form submission)</span>
-<li><code>inset-inline-start</code> CSS property support: <span id="inset-support">&#x274c; (&lt;std-switch> doesn't work in RTL and vertical writing)</span>
-<li><code>:focus-visible</code> CSS pseudo class support: <span id="focus-visible-support">&#x274c; (&lt;std-switch> has focus ring on click)</span>
+<li>Form-associated custom elements support: <span id="face-support">&#x274c;
+  (&lt;std-switch> doesn't support form submission, fieldset/form/label element association, better disabled state)</span>
+<li><code>inset-inline-start</code> CSS property support: <span id="inset-support">&#x274c;
+  (&lt;std-switch> doesn't work in RTL and vertical writing)</span>
+<li><code>:focus-visible</code> CSS pseudo class support: <span id="focus-visible-support">&#x274c;
+  (&lt;std-switch> has focus ring on click)</span>
 </ul>
 <script>
 let $ = document.querySelector.bind(document);
