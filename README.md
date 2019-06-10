@@ -131,6 +131,14 @@ When the flag is enabled, ```std-switch``` element is styled as UISwitch on iOS,
 
 TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](https://github.com/tkent-google/std-switch/issues/7))
 
+
+## Security and Privacy Considerations
+
+There are no known security or privacy impacts of this feature.  Security/privacy impact of this feature is same as `<input type=checkbox>`.
+
+If the platform-dependent appearance is enabled, the origin can detect user's platform. However, that information is already exposed by `navigator.platform`.
+
+
 ## Considered alternatives
 
 ### Making &lt;input type=chekbox> customizable
