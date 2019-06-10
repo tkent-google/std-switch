@@ -141,7 +141,7 @@ If the platform-dependent appearance is enabled, the origin can detect user's pl
 
 ## Considered alternatives
 
-### Making &lt;input type=chekbox> customizable
+### Making &lt;input type=checkbox> customizable
 
 Providing a swtich control as a variant of &lt;input type=checkbox> would be possible.
 We can add ```switch``` content attribute, add ```swtich``` keyword to ```appearance``` CSS property, or something.
