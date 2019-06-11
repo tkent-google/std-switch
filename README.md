@@ -119,9 +119,9 @@ TODO: Supports ```:checked``` ([Issue #3](https://github.com/tkent-google/std-sw
 There are two approaches. We have not decided yet. ([Issue #5](https://github.com/tkent-google/std-switch/issues/5))
 
 * A) Compatible with ```<input type=checkbox>```<br>
- ```<std-swtich name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
+ ```<std-switch name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
 * B) Send state simply<br>
- ```<std-swtich name=something>``` with "off" state will send ```something=off```, one with "on" state will send ```something=on```.
+ ```<std-switch name=something>``` with "off" state will send ```something=off```, one with "on" state will send ```something=on```.
 
 
 ### Appearance customization
@@ -143,8 +143,8 @@ If the platform-dependent appearance is enabled, the origin can detect user's pl
 
 ### Making &lt;input type=chekbox> customizable
 
-Providing a swtich control as a variant of &lt;input type=checkbox> would be possible.
-We can add ```switch``` content attribute, add ```swtich``` keyword to ```appearance``` CSS property, or something.
+Providing a switch control as a variant of &lt;input type=checkbox> would be possible.
+We can add ```switch``` content attribute, add ```switch``` keyword to ```appearance``` CSS property, or something.
 
 However, as decribed in 'Why a switch control?' section, using &lt;input type=checkbox>
 for a switch control is semantically incorrect.
