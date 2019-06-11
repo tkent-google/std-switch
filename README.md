@@ -8,6 +8,8 @@
 
 This document proposes a new HTML element for a 'switch' control.  It is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
 
+This proposal is intended to incubate in the WICG once it gets interest on [its Discourse thread](https://discourse.wicg.io/t/proposal-a-toggle-switch-control-element/3620). After incubation, if it gains multi-implementer interest, it will graduate to the [HTML Standard](https://html.spec.whatwg.org/multipage/) as a new standard HTML element.
+
 ### Why a switch control?
 
 Many UI frameworks have switch controls to represent off/on states and ask a user to change the state.  As of April 2019 the HTML standard has a checkbox, which is functionally similar to switch control.  However:
@@ -23,7 +25,9 @@ Many UI frameworks have switch controls to represent off/on states and ask a use
   * The switch control should provide a way to switch its appearance from the default one to platform-dependent one.
   * The switch control should provide a way to customize color, size, radius, etc. of its visual parts.
 * API similar to existing form controls
-
+* Explore new ways of building HTML elements, including:
+  * Being perfectly polyfillable ([see below](#why-does-the-name-have-a-dash-in-it))
+  * Being opt-in / lazy-loadable ([see below](#as-a-new-global-element-instead-of-a-built-in-module))
 
 ## Sample code
 
@@ -119,9 +123,9 @@ TODO: Supports ```:checked``` ([Issue #3](https://github.com/tkent-google/std-sw
 There are two approaches. We have not decided yet. ([Issue #5](https://github.com/tkent-google/std-switch/issues/5))
 
 * A) Compatible with ```<input type=checkbox>```<br>
- ```<std-swtich name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
+ ```<std-switch name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
 * B) Send state simply<br>
- ```<std-swtich name=something>``` with "off" state will send ```something=off```, one with "on" state will send ```something=on```.
+ ```<std-switch name=something>``` with "off" state will send ```something=off```, one with "on" state will send ```something=on```.
 
 
 ### Appearance customization
@@ -141,27 +145,85 @@ If the platform-dependent appearance is enabled, the origin can detect user's pl
 
 ## Considered alternatives
 
-### Making &lt;input type=chekbox> customizable
+### Making `<input type=checkbox>` customizable
 
-Providing a swtich control as a variant of &lt;input type=checkbox> would be possible.
-We can add ```switch``` content attribute, add ```swtich``` keyword to ```appearance``` CSS property, or something.
+Providing a switch control as a variant of `<input type=checkbox>` would be possible.
+We can add ```switch``` content attribute, add ```switch``` keyword to ```appearance``` CSS property, or something.
 
-However, as decribed in 'Why a switch control?' section, using &lt;input type=checkbox>
+However, as decribed in the '[Why a switch control?](#why-a-switch-control)' section, using `<input type=checkbox>`
 for a switch control is semantically incorrect.
 Also, it would add complexity to UA implementations, and it's difficult to provide
 customization flexibility with a switch control implemented by these ways.
 
-### Native implementation in UAs vs. a built-in module
+### As a new global element (instead of a built-in module)
 
-Form control elements are major sources of interoperability issues.
-Native implementations likely introduce new interoperability issues.
+We would like to experiment with ways of making new HTML elements "pay for what you use".
+Instead of every page paying the cost of loading a switch implementation into memory as a global (e.g. `window.HTMLSwitchElement`),
+we want pages to opt in to using the switch control.
+The JavaScript module import system provides a convenient mechanism for this,
+which is also used by other APIs that share the same goals (such as [KV Storage](https://wicg.github.io/kv-storage/)).
 
-UAs can share a built-in module implementation because it's a JavaScript code,
-and web developers won't see interoperablity issues with it at all.
+Note that although adding a global switch control implementation is a small step,
+it contributes to a [tragedy of the commons](https://en.wikipedia.org/wiki/Tragedy_of_the_commons),
+which makes it harder and harder to add new APIs and elements.
+Exploring an opt-in solution here opens the door to more sustainable growth overall.
 
-### Third-party library, vs. a built-in module
+### Leaving this up to libraries
 
-See [JavaScript Standard Library Proposal](https://github.com/tc39/proposal-javascript-standard-library/)
+It is possible to continue requiring that web developers use a library to implement switches.
+We believe that the platform should instead provide a basic control such as a switch out of the box.
+Major modern UI platforms (e.g. Android, iOS, Windows, macOS) all provide switch controls,
+and the web should as well.
+The story for macOS is "use [`NSSwitch`](https://developer.apple.com/documentation/appkit/nsswitch) and you get a switch control."
+The story for the web should be similarly simple, instead of "use a checkbox, customize it with tons of CSS, and remember to change its ARIA `role=""`."
+
+
+## FAQs
+
+### Why as a built-in module?
+
+### Why does the name have a dash in it?
+
+The name `<std-switch>` is unusual compared to built-in HTML elements,
+none of which have a dash.
+A more natural choice might be `<switch>`, or perhaps `<toggleswitch>`.
+
+The reason to include a dash in the name is to allow the element to be polyfillable,
+using custom elements.
+We'd like to experiment with moving away from the world where browsers get a special namespace that can never be polyfilled.
+
+There are alternative ways of achieving this goal;
+for example, we could lift the dash restriction on custom element names.
+There is some more discussion in [WICG/virtual-scroller#161](https://github.com/WICG/virtual-scroller/issues/161).
+This is definitely subject to change as we continue to prototype.
+
+### Is this a custom element?
+
+Not really.
+This is a proposal for a new built-in HTML element,
+similar to other new-ish elements like `<details>`, `<dialog>`, or the proposed `<portal>`.
+If it graduates from incubation successfully, it will become part of the HTML Standard.
+
+The name does have a dash, as noted above.
+And the goal of allowing custom elements to perfectly polyfill `<std-switch>` will mean that `<std-switch>` behaves like a custom element in many ways.
+(As we proceed to writing a rigorous spec, those will be enumerated in detail.)
+Indeed, browsers may even choose to implement `<std-switch>` using custom elements under the hood.
+(Chromium plans to do so.)
+But in the end, this is a new element intended for the HTML Standard,
+meant to ship natively with browsers.
+
+### Will all browsers share code for the switch control?
+
+This is a decision for individual browser vendors to make.
+Note that historically some parts of browser codebases are shared
+(e.g. Web Audio, `RegExp` engines, Web RTC)
+while many parts are implemented independently.
+
+It will likely be easier to share code for `<std-switch>` than for `<input type=checkbox>`,
+because our goal of making it 100% polyfillable and layered means that it will depend on standardized web-exposed API concepts instead of hooking directly into internal implementation details.
+But in the end,
+this repository will only provide a specification,
+which can be implemented however makes most sense to individual browsers.
 
 ## References &amp; Acknowledgements
 
