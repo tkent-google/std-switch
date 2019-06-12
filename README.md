@@ -180,8 +180,6 @@ The story for the web should be similarly simple, instead of "use a checkbox, cu
 
 ## FAQs
 
-### Why as a built-in module?
-
 ### Why does the name have a dash in it?
 
 The name `<std-switch>` is unusual compared to built-in HTML elements,
