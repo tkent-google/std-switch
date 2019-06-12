@@ -184,6 +184,7 @@ internal-meter {
   box-shadow: var(--std-switch-track-shadow, var(--i-track-shadow));
   padding: var(--std-switch-track--padding, var(--i-track-padding));
   inline-size: 100%;
+  min-inline-size: 100%;
   block-size: var(--std-switch-track-height, var(--i-track-height));
   transition: var(--std-switch-track-transition, all linear 0.1s);
 }
@@ -214,7 +215,6 @@ internal-meter {
 }
 
 .container {
-  position: relative;
   display: inline-flex;
   align-items: center;
   inline-size: 100%;
@@ -234,26 +234,27 @@ internal-meter {
   --i-thumb-margin-start: 2px;
   --i-thumb-margin-end: 2px;
 
-  position: absolute !important;
   display: inline-block;
   border: var(--std-switch-thumb-border, var(--i-thumb-border));
   border-radius: var(--std-switch-thumb-radius, var(--i-thumb-radius));
-  inline-size: var(--std-switch-thumb-width, var(--i-thumb-width));
+  min-inline-size: var(--std-switch-thumb-width, var(--i-thumb-width));
+  max-inline-size: var(--std-switch-thumb-width, var(--i-thumb-width));
   block-size: var(--std-switch-thumb-height, var(--i-thumb-height));
   background: var(--std-switch-thumb-background, var(--i-thumb-background));
   box-sizing: border-box;
-  inset-inline-start: var(--std-switch-thumb-margin-start, var(--i-thumb-margin-start));
   transition: var(--std-switch-thumb-transition, all linear 0.1s);
   box-shadow: var(--std-switch-thumb-shadow);
+  margin-inline-start: calc(-100% + var(--std-switch-thumb-margin-start, var(--i-thumb-margin-start)));
 }
 
 :host(:not(:disabled):hover) .thumb {
-  inline-size: var(--std-switch-thumb-width, var(--i-thumb-width-hover));
+  min-inline-size: var(--std-switch-thumb-width, var(--i-thumb-width-hover));
+  max-inline-size: var(--std-switch-thumb-width, var(--i-thumb-width-hover));
 }
 
 :host([on]) .thumb {
   border: var(--std-switch-thumb-border, var(--i-thumb-border-on));
-  inset-inline-start: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
+  margin-inline-start: calc(0px - var(--std-switch-thumb-width, var(--i-thumb-width)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
 }
 
 :host(:focus) .thumb {
@@ -265,32 +266,23 @@ internal-meter {
 }
 
 :host([on]:not(:disabled):hover) .thumb {
-  inset-inline-start: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width-hover)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
+  margin-inline-start: calc(0px - var(--std-switch-thumb-width, var(--i-thumb-width-hover)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
+}
+
+.ripple {
+  display: none;
 }
 
 :host(:not(:focus-visible):focus) {
   outline: none;
 }
-
-@supports not (inset-inline-start: 0px) {
-
-.thumb {
-  left: var(--std-switch-thumb-margin-start, var(--i-thumb-margin-start));
-}
-
-:host([on]) .thumb {
-  left: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
-}
-
-:host([on]:not(:disabled):hover) .thumb {
-  left: calc(100% - var(--std-switch-thumb-width, var(--i-thumb-width-hover)) - var(--std-switch-thumb-margin-end, var(--i-thumb-margin-end)));
-}
-
-}
 `;
 
 const kSwitchStyleMaterial = `
 :host {
+  --i-material-switch-thumb-size: 20px;
+  --i-material-ripple-size: 50px;
+
   inline-size: 36px;
   block-size: 20px;
   --std-switch-track-height: 14px;
@@ -300,8 +292,8 @@ const kSwitchStyleMaterial = `
   --std-switch-track-shadow: none;
   --std-switch-thumb-margin-start: 0px;
   --std-switch-thumb-margin-end: 0px;
-  --std-switch-thumb-width: 20px;
-  --std-switch-thumb-height: 20px;
+  --std-switch-thumb-width: var(--i-material-switch-thumb-size);
+  --std-switch-thumb-height: var(--i-material-switch-thumb-size);
   --std-switch-thumb-shadow: 0 1px 5px 0 rgba(0,0,0,0.6);
   --std-switch-thumb-border: none;
 }
@@ -312,16 +304,31 @@ const kSwitchStyleMaterial = `
 
 .ripple {
   display: inline-block;
-  position: absolute;
-  opacity: 0;
+  position: relative;
+  opacity: 0.3;
   background: gray;
-  inset-inline-start: 10px;
-  inset-block-start: 10px;
+  inset-inline-start: calc(var(--i-material-switch-thumb-size) / 2);
+  inset-block-start: calc(var(--i-material-switch-thumb-size) / 2);
   inline-size: 0px;
   block-size: 0px;
-  border-radius: 0px;
+  border-radius: 50%;
   pointer-events: none;
 }
+
+.ripple.fadein {
+  inset-inline-start: calc(var(--i-material-switch-thumb-size) / 2 - var(--i-material-ripple-size) / 2);
+  inset-block-start: calc(var(--i-material-switch-thumb-size) / 2 - var(--i-material-ripple-size) / 2);
+  inline-size: var(--i-material-ripple-size);
+  block-size: var(--i-material-ripple-size);
+  opacity: 0.3;
+  transition: all linear 0.1s;
+}
+
+.ripple.fadeout {
+  opacity: 0;
+  transition: opacity linear 500ms;
+}
+
 `;
 
 const kSwitchStyleCocoa = `
@@ -494,31 +501,12 @@ export class StdSwitchElement extends HTMLElement {
     }
     // TODO(tkent): Having theme-specific code isn't smart.
     if (theme == THEME_MATERIAL) {
-      this._rippleElement = this._thumbElement.appendChild(this.ownerDocument.createElement('span'));
-      this._rippleElement.className = 'ripple';
-      const keyframes = {
-	  left: ['10px', '-15px'],
-	  top: ['10px', '-15px'],
-	  width: ['0px', '50px'],
-	  height: ['0px', '50px'],
-	  borderRadius: ['0px', '25px'],
-          opacity: [0, 0.3]
-      };
       this.addEventListener('mousedown', event => {
-        this._rippleElement.animate(keyframes, {
-	  duration: 100,
-	  fill: 'forwards'});
+        this._rippleElement.className = 'ripple fadein';
       });
       this.addEventListener('mouseup', event => {
-        this._rippleElement.animate({
-	  opacity: [0.3, 0, 0],
-	  width: ['50px', '50px', '0'],
-	  height: ['50px', '50px', '0'],
-	  left: ['-15px', '-15px', '10px'],
-	  top: ['-15px', '-15px', '10px']
-	}, {
-	  duration: 1000,
-	  fill: 'forwards'});
+        this._rippleElement.classList.add('fadeout');
+        this._rippleElement.addEventListener('transitionend', e => { e.target.className = 'ripple'; }, {once: true});
       });
     }
   }
@@ -543,16 +531,22 @@ export class StdSwitchElement extends HTMLElement {
     let container = doc.createElement('span');
     container.className = 'container';
     this._root.appendChild(container);
+
     this._trackElement = container.appendChild(doc.createElement('internal-meter'));
     this._trackElement.value = this.on ? 100 : 0;
     this._trackElement.appendChild(doc.createElement('slot'));
-    this._thumbElement = container.appendChild(doc.createElement('span'));
-    this._thumbElement.className = 'thumb';
+
+    let thumbElement = container.appendChild(doc.createElement('span'));
+    thumbElement.className = 'thumb';
+
+    this._rippleElement = thumbElement.appendChild(doc.createElement('span'));
+    this._rippleElement.className = 'ripple';
 
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', '0');
     if (!this.hasAttribute('role'))
       this.setAttribute('role', 'switch');
+
     this.setAttribute('aria-checked', this.on ? 'true' : 'false');
   }
 

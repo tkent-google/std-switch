@@ -49,7 +49,7 @@ internal-meter, std-switch {
 <li>Custom elements support: <span id="ce-support">&#x274c; (&lt;std-switch> doesn't work at all)</span>
 <li>Form-associated custom elements support: <span id="face-support">&#x274c;
   (&lt;std-switch> doesn't support form submission, fieldset/form/label element association, better disabled state)</span>
-<li><code>inset-inline-start</code> CSS property support: <span id="inset-support">&#x274c;
+<li><code>margin-inline-start</code> CSS property support: <span id="margin-support">&#x274c;
   (&lt;std-switch> doesn't work in RTL and vertical writing)</span>
 <li><code>:focus-visible</code> CSS pseudo class support: <span id="focus-visible-support">&#x274c;
   (&lt;std-switch> has focus ring on click)</span>
@@ -60,8 +60,8 @@ if (window.customElements)
   $('#ce-support').textContent = '\u2705';
 if (window.ElementInternals && ElementInternals.prototype.setFormValue)
   $('#face-support').textContent = '\u2705';
-if (CSS.supports('inset-inline-start', '0px'))
-  $('#inset-support').textContent = '\u2705';
+if (CSS.supports('margin-inline-start', '0px'))
+  $('#margin-support').textContent = '\u2705';
 try {
   document.querySelector(':focus-visible');
   $('#focus-visible-support').textContent = '\u2705';
