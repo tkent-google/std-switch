@@ -20,7 +20,7 @@ Many UI frameworks have switch controls to represent off/on states and ask a use
 
 ## Goals
 
-* Identical appearance on all platforms and all supported browsers by default
+* Identical appearance on all platforms and all supported browsers by default ([Issue #21](https://github.com/tkent-google/std-switch/issues/21))
 * Easy and flexible customization
   * The switch control should provide a way to switch its appearance from the default one to platform-dependent one.
   * The switch control should provide a way to customize color, size, radius, etc. of its visual parts.
@@ -51,9 +51,8 @@ Users can turn on/off the switch by clicking it, and submitting the form will ha
 ## Proposed API
 
 The element is provided as a [built-in module](https://github.com/tc39/proposal-javascript-standard-library/).
-```import 'std:elements/switch'``` defines ```<std-switch>``` element and ```StdSwitchElement``` interface.
-
-```<std-switch>``` is similar to ```<input type=checkbox>``` in terms of API. A ```<std-switch>``` instance has two states; "off" and "on".  It doesn't support indeterminate state like the checkbox.
+```import 'std:elements/switch'``` defines ```<std-switch>``` element,
+and it can expose ```StdSwitchElement``` interface.
 
 ### Content attributes:
 
@@ -68,17 +67,16 @@ TODO: Supports ```autofocus```, which should be a global attribute. ([whatwg/htm
 
 These attributes should work same as existing form controls.
 
-```<std-switch>``` should support ```checked``` and ```defaultchecked``` attributes ([Issue #2](https://github.com/tkent-google/std-switch/issues/2)).  There are some approaches for them. We have not decided yet. ([Issue #4](https://github.com/tkent-google/std-switch/issues/4))
+```<std-switch>``` should support ```on``` and ```defaulton``` attributes ([Issue #2](https://github.com/tkent-google/std-switch/issues/2)).
 
-* A) Compatible with ```<input type=checkbox>```<br>
-```checked``` attribute represents the default state, and ```defaultChecked``` property reflects on ```checked``` attribute. No attribute mapped to ```checked``` property.
-* B) Simple mappings<br>
-```defaultChecked``` property reflects on ```defaultchecked``` attribute value, and ```checked``` property reflects on ```checked``` attribute.  Code like ```switch.checked = true``` adds ```checked``` attribute.  We need to specify ```defaultchecked``` attribute if we want to reset the element to on state, like ```<std-switch defaultchecked checked>```
+`defaultOn` property reflects on `defaulton` attribute value, and `on` property reflects on `on` attribute.
+Code like `switch.on = true` adds `on` attribute.  We need to specify `defaulton` attribute
+if we want to reset the element to on state, like `<std-switch defaulton on>`` ([Issue #4](https://github.com/tkent-google/std-switch/issues/4))
 
 ### Properties and functions
 
-* ```checked```  - Represents the element's state.  See the previous section
-* ```defaultChecked``` - Represents the default state.  See the previous section
+* `on`  - Represents the element's state.  See the previous section
+* `defaultOn` - Represents the default state.  See the previous section
 * ```disabled``` - Same as existing form controls
 * ```form``` - Same as existing form controls
 * ```labels``` - Same as existing form controls
@@ -120,7 +118,7 @@ TODO: Supports ```:checked``` ([Issue #3](https://github.com/tkent-google/std-sw
 
 ### Form submission
 
-There are two approaches. We have not decided yet. ([Issue #5](https://github.com/tkent-google/std-switch/issues/5))
+There are two approaches. We have not decided yet. ([Issue #15](https://github.com/tkent-google/std-switch/issues/15), [Issue #5](https://github.com/tkent-google/std-switch/issues/5))
 
 * A) Compatible with ```<input type=checkbox>```<br>
  ```<std-switch name=something>``` with "off" state will send no entry.  One with "on" state will send ```value``` attribute value if it exists, or ```something=on```.
