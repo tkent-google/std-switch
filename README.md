@@ -131,7 +131,12 @@ There are two approaches. We have not decided yet. ([Issue #15](https://github.c
 TODO: an easy flag to enable platform-dependent appearance ([Issue #6](https://github.com/tkent-google/std-switch/issues/6))
 When the flag is enabled, ```std-switch``` element is styled as UISwitch on iOS, [Material Design switch](https://material.io/design/components/selection-controls.html#switches) on Android, [Fluent design toggle switch](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles) on Windows.
 
-TODO: Full customization.  Shadow parts? CSS custom properties? ([Issue #7](https://github.com/tkent-google/std-switch/issues/7))
+The element provides full customization capability by [CSS Shadow Parts](https://www.w3.org/TR/css-shadow-parts-1/).
+A ```<std-switch>``` contains three parts, `track`, `track-fill`, and `thumb`. `track` and `thumb` are siblings, and `track-fill` is a child of `track`.
+
+<img alt="Part structure" src=part-structure.svg width=460>
+
+(See [Issue #7](https://github.com/tkent-google/std-switch/issues/7))
 
 
 ## Security and Privacy Considerations
